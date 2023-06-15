@@ -8,13 +8,7 @@ local set_raw_body = kong.service.request.set_raw_body
 local ngx_decode_args = ngx.decode_args
 local encode_args = ngx.encode_args
 local str_find = string.find
-local multipart = require "multipart"
-local cjson = require "cjson"
-local aes = require("resty.aes_ecb")
 
-local CONTENT_TYPE = "content-type"
-local CONTENT_LENGTH = "content-length"
-local JSON, MULTI, ENCODED = "json", "multi_part", "form_encoded"
 
 local RequestAuthHandler = {}
 
