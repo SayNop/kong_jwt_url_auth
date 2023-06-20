@@ -1,15 +1,22 @@
--- config
 local typedefs = require "kong.db.schema.typedefs"
 
 return {
-    name = "request-sign-aes256",  -- plugin name
+    name = "kong_jwt_url_auth",  -- plugin name
     fields = {
-        { consumer = typedefs.no_consumer },   -- 插件消费者
-        { protocols = typedefs.protocols_http },  -- 插件运行的协议
+        { consumer = typedefs.no_consumer },
+        { protocols = typedefs.protocols_http },
         { config = {
             type = "record",
+            -- conf in handler
             fields = {
-                { key = { type = "string", default = "12345678912345678912345678912345" }, },
+                {
+                    -- Too long. only support length 32
+                    secret_key = { type = "string", default = "1234567891234567891234567891234567891234567" }, 
+                },
+                -- { 
+                --     -- sign deliver, iss, not check
+                --     key_claim_name = { type = "string", default = "iss" },
+                -- },
             },
         },
         },
