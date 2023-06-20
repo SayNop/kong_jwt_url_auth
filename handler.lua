@@ -43,7 +43,7 @@ function RequestAuthHandler:access(conf)
     local claims = jwt.claims
     local header = jwt.header
 
-    local secret_key = "1234567891234567891234567891234567891234567")
+    local secret_key = "1234567891234567891234567891234567891234567"
     if not jwt:verify_signature(secret_key) then
         return kong.response.exit(401, { code = 401, success = false, data = "", msg = "UnAuthorized" })
     end

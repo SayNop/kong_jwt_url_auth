@@ -2,6 +2,6 @@
 A kong plugin that verifies request permissions via JWT token.
 
 
--- handler :  main
--- schema :  config
--- daos :  cache
+- handler :  main
+- schema :  config
+- daos :  cache
