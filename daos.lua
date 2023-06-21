@@ -8,10 +8,10 @@ return {
     --   admin_api_name = "kong_jwt_url_auths",
     --   admin_api_nested_name = "kong_jwt_url_auth",
       fields = {
-          { phone = { type = "string", required = true, unique = true }, },
-          { username = { type = "string", required = true, unique = true }, },
-          { password = { type = "string", reference = "consumers", required = true, on_delete = "cascade", }, },
-          { level = { type = "number", default = 0 }, },
-      },
+            { phone = { type = "string", required = true, unique = true }, },
+            { username = { type = "string", required = true, unique = true }, },
+            { password = { type = "string", required = true}, },
+            { level = { type = "number", default = 0 }, },
+        },
     },
-  }
+}

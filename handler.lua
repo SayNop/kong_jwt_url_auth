@@ -1,8 +1,7 @@
 local kong = kong
 local get_header = kong.request.get_header
 local set_header = kong.service.request.set_header
-local re_gmatch = ngx.re.gmatch
-local jwt_decoder = require "kong.plugins.jwt.jwt_parser"
+local jwt_decoder = require "kong.plugins.kong_jwt_url_auth.jwt_parser"
 local BasePlugin = require "kong.plugins.base_plugin"
 
 
@@ -14,7 +13,7 @@ RequestAuthHandler.VERSION = "1.0.0"
 
 function RequestAuthHandler:new()
     RequestAuthHandler.super.new(self, "kong_jwt_url_auth")
-  end
+end
 
 
 -- main
@@ -26,7 +25,7 @@ function RequestAuthHandler:access(conf)
     end
     local bear_token = get_header("authorization")
     if (bear_token == nil or string.sub(bear_token, 1, 7) ~= "Bearer ") then
-        kong.log.inspect("misee bearer")
+        kong.log.inspect("miss bearer")
         return kong.response.exit(401, { code = 401, success = false, data = "", msg = "UnAuthorized" })
     end
 
@@ -65,7 +64,6 @@ function RequestAuthHandler:access(conf)
     end
 
     set_header("x-auth-phone", phone)
-
 end
 
 
