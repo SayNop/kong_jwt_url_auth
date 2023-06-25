@@ -75,6 +75,15 @@ function RequestAuthHandler:access(conf)
         return kong.response.exit(401, { code = 401, success = false, data = "", msg = "UnAuthorized" })
     end
 
+    -- Verify the JWT registered claims
+    -- local claims_to_verify = { "exp", "nbf" }
+    -- local ok_claims, errors = jwt:verify_registered_claims(claims_to_verify)
+    local ok_claims, errors = jwt:verify_registered_claims(conf.claims_to_verify)
+    if not ok_claims then
+        kong.log.inspect(errors)
+        return kong.response.exit(401, { code = 401, success = false, data = "", msg = "Token Expired" })
+    end
+
     local phone = claims["phone"]
     if not phone then
         kong.log.inspect("miss phone in payload")
