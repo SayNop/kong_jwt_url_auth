@@ -88,7 +88,8 @@ function RequestAuthHandler:access(conf)
     if conf.maximum_expiration ~= nil and conf.maximum_expiration > 0 then
         local ok, errors = jwt:check_maximum_expiration(conf.maximum_expiration)
         if not ok then
-            return false, { status = 401, errors = errors }
+            kong.log.inspect(errors)
+            return kong.response.exit(401, { code = 401, success = false, data = "", msg = "Token Expired" })
         end
     end
 
