@@ -84,6 +84,14 @@ function RequestAuthHandler:access(conf)
         return kong.response.exit(401, { code = 401, success = false, data = "", msg = "Token Expired" })
     end
 
+    -- Verify the JWT expiry not too long
+    if conf.maximum_expiration ~= nil and conf.maximum_expiration > 0 then
+        local ok, errors = jwt:check_maximum_expiration(conf.maximum_expiration)
+        if not ok then
+            return false, { status = 401, errors = errors }
+        end
+    end
+
     local phone = claims["phone"]
     if not phone then
         kong.log.inspect("miss phone in payload")

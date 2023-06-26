@@ -14,25 +14,26 @@ return {
                     secret_key = { type = "string", default = "1234567891234567891234567891234567891234567" }, 
                 },
                 -- { 
-                --     -- sign deliver, iss, not check
+                --     -- iss in payload: sign deliver, not check
                 --     key_claim_name = { type = "string", default = "iss" },
                 -- },
-                -- { maximum_expiration = {
-                --     description = "maximum_expiration seconds -  31536000 (365 days) / 259200 (3 days)",
-                --     type = "number",
-                --     default = 259200,
-                --     between = { 0, 31536000 },
-                --   }, 
-                -- },
+                { maximum_expiration = {
+                    -- field description not support on kong 1.x
+                    -- description = "maximum_expiration seconds -  31536000 (365 days) / 259200 (3 days)",
+                    type = "number",
+                    default = 259200,
+                    between = { 0, 31536000 },
+                  }, 
+                },
                 {
                     -- array: verify keys in payload
                     claims_to_verify = {
-                        description = "A list of registered claims (according to RFC 7519) that Kong can verify as well. Accepted values: one of exp or nbf.",
+                        -- A list of registered claims (according to RFC 7519) that Kong can verify as well. Accepted values: one of exp or nbf
                         type = "set",
 
                         elements = {
-                        type = "string",
-                        one_of = { "exp", "nbf" },
+                            type = "string",
+                            one_of = { "exp", "nbf" },
                         }, 
                     }, 
                 },
