@@ -31,3 +31,6 @@ CREATE TABLE login_user(
     level smallint DEFAULT 0
 );
 ```
+
+## Notice
+Remove all `kong.log.inspect` code in production environment.
