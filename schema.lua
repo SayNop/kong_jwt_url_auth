@@ -37,6 +37,15 @@ return {
                         }, 
                     }, 
                 },
+                {
+                    redisHost = { type = "string", default = "127.0.0.1" }
+                },
+                {
+                    redisPort = { type = "number", default = 6379 }
+                },
+                {
+                    redisPwd = { type = "string", default = "1234" }
+                },
             },
         },
         },

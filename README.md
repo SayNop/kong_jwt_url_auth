@@ -6,6 +6,13 @@ Confirm user permissions for each API through the database.
 - Kong Version: 1.1.3
 - Postgresql Version: 9.6.24
 
+## Feature
+- check token signature
+- check token expiry
+- check token conflict
+- check user has permission to access api
+
+
 ## File Structure
 - handler :  main
 - schema :  config

@@ -58,7 +58,32 @@ function RequestAuthHandler:access(conf)
 
     local token = string.sub(bear_token, 8, -1)
 
-    -- check
+    -- check token conflict
+    local redis = require "resty.redis"
+    local redis_conn = redis:new()
+    redis_conn:set_timeouts(1000, 1000, 1000) -- 1 sec
+    local ok, err = redis_conn:connect(conf.redisHost, conf.redisPort)
+    if not ok then
+        kong.log.warn("failed to connect redis: ", err)
+    else
+        -- redis password
+        -- if redisPwd ~= "" then
+        --     local auth, err = redis_conn:auth(conf.redisPwd)
+        --     if not auth then
+        --         kong.log.warn("failed to authenticate: ", err)
+        --     end
+        -- end
+        local conflict_res, err = redis_conn:get('conflict:'..token)
+        if conflict_res ~= ngx.null then
+            kong.log.err("token "..token.."  token conflict")
+            kong.response.exit(401, { code = 401, success = false, data = "", msg = "Token Conflict" })
+            return
+        end
+        -- use redis connect pool
+        local ok, err = redis_conn:set_keepalive(10000, 100) -- (connect expiry(ms), pool size)
+    end
+
+    -- check token decode
     local jwt, err = jwt_decoder:new(token)
     if err then
       -- return false, { status = 401, message = "Bad token; " .. tostring(err) }
