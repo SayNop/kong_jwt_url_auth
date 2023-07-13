@@ -94,16 +94,17 @@ function RequestAuthHandler:access(conf)
     local claims = jwt.claims
     local header = jwt.header
 
-    local secret_key = "1234567891234567891234567891234567891234567"
-    if not jwt:verify_signature(secret_key) then
+    -- local secret_key = "1234567891234567891234567891234567891234567"
+    -- if not jwt:verify_signature(secret_key) then
+    if not jwt:verify_signature(conf.secret_key) then
         kong.log.inspect("check secret fail")
         return kong.response.exit(401, { code = 401, success = false, data = "", msg = "UnAuthorized" })
     end
 
     -- Verify the JWT registered claims
-    -- local claims_to_verify = { "exp", "nbf" }
-    -- local ok_claims, errors = jwt:verify_registered_claims(claims_to_verify)
-    local ok_claims, errors = jwt:verify_registered_claims(conf.claims_to_verify)
+    local claims_to_verify = { "exp", "nbf" }
+    local ok_claims, errors = jwt:verify_registered_claims(claims_to_verify)
+    -- local ok_claims, errors = jwt:verify_registered_claims(conf.claims_to_verify)
     if not ok_claims then
         kong.log.inspect(errors)
         return kong.response.exit(401, { code = 401, success = false, data = "", msg = "Token Expired" })
