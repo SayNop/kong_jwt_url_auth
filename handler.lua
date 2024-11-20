@@ -24,10 +24,12 @@ function RequestAuthHandler:access(conf)
         return
     end
 
-    local service_map = { service_a = 0, service_b = 1}
+    -- todo replace
+    local service_map = { ["service_a"] = 0, ["service_b"] = 1}
     kong.log.inspect(kong.request.get_forwarded_host())
     kong.log.inspect(kong.request.get_path())
     local service_id = service_map[string.sub(kong.request.get_forwarded_host(), 1, -5)]
+    
     if not service_id then
         kong.log.inspect("service not record")
         return kong.response.exit(404, { code = 404, success = false, data = "", msg = "Not Found" })
