@@ -49,16 +49,19 @@ Use host or path to forward requests
     ```lua
     local service_map = { ["service_a.com"] = 0, ["service_b.com"] = 1}
     local service_id = service_map[kong.request.get_forwarded_host()]
-
+    -- or
     local service_map = { ["service_a"] = 0, ["service_b"] = 1}
     local service_id = service_map[string.sub(kong.request.get_forwarded_host(), 1, -5)]
     ```
 - path route
     ```lua
     local service_map = { ["/a/"] = 0, ["/b/"] = 1}
-    local service_id = service_map[kong.router.get_route().paths[0]]
-    ```
+    -- lua table index start from 1
+    local first_path = kong.router.get_route().paths[1]
+    local service_id = service_map[first_path]
 
+    local sign = string.sub(kong.request.get_path(), #first_path)
+    ```
 
 ### Postgresql Table
 

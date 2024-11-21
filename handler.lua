@@ -35,6 +35,8 @@ function RequestAuthHandler:access(conf)
         return kong.response.exit(404, { code = 404, success = false, data = "", msg = "Not Found" })
     end
     kong.log.inspect(service_id .. kong.request.get_path())
+
+    -- todo check sign
     local api, err = kong.db.api_mgr:select({sign = service_id .. kong.request.get_path()})
     if err then
         return error(err)
